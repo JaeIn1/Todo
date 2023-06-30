@@ -1,0 +1,41 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+body {
+  background-color: azure;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+.container {
+  margin-top: 10px;
+  max-width: 100%;
+  width: 400px;
+}
+#todo-input {
+  width: 100%;
+  background-color: lightyellow;
+  display: block;
+  font-size: 2rem;
+  padding: 0.5rem 2rem 0.5rem 0.5rem;
+}
+#todo-list {
+  background-color: lightyellow;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+#todo-list li {
+  border-top: 1px solid rgb(242, 242, 242);
+  font-size: 2rem;
+  user-select: none;
+  padding-left: 10px;
+}
+.complete {
+  color: rgb(155, 155, 155);
+  text-decoration: line-through;
+}
