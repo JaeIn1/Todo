@@ -24,18 +24,37 @@ body {
   padding: 0.5rem 2rem 0.5rem 0.5rem;
 }
 #todo-list {
-  background-color: lightyellow;
+  background-color: white;
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
 #todo-list li {
   border-top: 1px solid rgb(242, 242, 242);
-  font-size: 2rem;
+  font-size: 1.5rem;
   user-select: none;
   padding-left: 10px;
 }
 .complete {
   color: rgb(155, 155, 155);
   text-decoration: line-through;
+}
+li button {
+  background-color: mintcream;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  margin: 1.5rem;
+  cursor: pointer;
+}
+
+li button:active {
+  border: 2px solid gray;
+}
+.deleteBtn {
+  background-color: aquamarine;
+  margin-top: 10px;
+  padding: 0.5rem 2rem;
+  font-weight: bolder;
+  cursor: pointer;
 }
