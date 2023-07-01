@@ -34,7 +34,7 @@ const createTodo = (data) => {
 };
 
 const inputText = () => {
-  if (window.event.keyCode === 13 && todoInput.value !== "") {
+  if (window.event.keyCode === 13 && todoInput.value.trim() !== "") {
     createTodo();
   }
 };
@@ -70,3 +70,31 @@ if (savedTodoList) {
     createTodo(savedTodoList[i]);
   }
 }
+
+const accessToFo = (position) => {
+  const positionObj = {
+    latitude: position.coords.latitude,
+    longitude: position.coords.longitude,
+  };
+  weatherSearch(positionObj.latitude, positionObj.longitude);
+};
+
+const askForLocation = () => {
+  navigator.geolocation.getCurrentPosition(accessToFo, (err) => {
+    console.log(err);
+  });
+};
+
+const weatherSearch = (latitude, longitude) => {
+  fetch(
+    `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=72fc28d163230482c2f2e17b40e064ab`
+  )
+    .then((res) => {
+      return res.json();
+    })
+    .then((json) => {
+      console.log(json.name, json.weather[0].description);
+    });
+};
+
+askForLocation();
