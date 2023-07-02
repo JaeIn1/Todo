@@ -1,6 +1,7 @@
 const todoInput = document.querySelector("#todo-input");
 const todoList = document.querySelector("#todo-list");
 const savedTodoList = JSON.parse(localStorage.getItem("saved-items"));
+const savedWeatherData = JSON.parse(localStorage.getItem("saved-weather"));
 console.log(savedTodoList);
 
 const createTodo = (data) => {
@@ -33,13 +34,13 @@ const createTodo = (data) => {
   saveItemsFn();
 };
 
-const inputText = () => {
+const keyCodeCheck = () => {
   if (window.event.keyCode === 13 && todoInput.value.trim() !== "") {
     createTodo();
   }
 };
 
-const deleteTodo = () => {
+const deleteAll = () => {
   const deleteArr = document.querySelectorAll("li");
   for (let i = 0; i <= deleteArr.length; i++) {
     deleteArr[i]?.remove();
@@ -71,12 +72,13 @@ if (savedTodoList) {
   }
 }
 
-const accessToFo = (position) => {
+const accessToFo = ({ coords }) => {
+  const { latitude, longitude } = coords;
   const positionObj = {
-    latitude: position.coords.latitude,
-    longitude: position.coords.longitude,
+    latitude: latitude,
+    longitude: longitude,
   };
-  weatherSearch(positionObj.latitude, positionObj.longitude);
+  weatherSearch(positionObj);
 };
 
 const askForLocation = () => {
@@ -85,7 +87,31 @@ const askForLocation = () => {
   });
 };
 
-const weatherSearch = (latitude, longitude) => {
+const weatherDataActive = ({ location, weather }) => {
+  const weatherMainList = [
+    "Clear",
+    "Clouds",
+    "Drizzle",
+    "Rain",
+    "Snow",
+    "Thunderstorm",
+  ];
+  weather = weatherMainList.includes(weather) ? weather : "Fog";
+
+  const locationNameTag = document.querySelector("#location-name-tag");
+  locationNameTag.textContent = location;
+  document.body.style.backgroundImage = `url(./images/${weather}.jpg)`;
+
+  if (
+    !savedWeatherData ||
+    savedWeatherData.location !== location ||
+    savedWeatherData.weather !== weather
+  ) {
+    localStorage.setItem("saved-weather", JSON.stringify(location, weather));
+  }
+};
+
+const weatherSearch = ({ latitude, longitude }) => {
   fetch(
     `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=72fc28d163230482c2f2e17b40e064ab`
   )
@@ -93,8 +119,16 @@ const weatherSearch = (latitude, longitude) => {
       return res.json();
     })
     .then((json) => {
-      console.log(json.name, json.weather[0].description);
+      const weatherData = {
+        location: json.name,
+        weather: json.weather[0].main,
+      };
+      weatherDataActive(weatherData);
     });
 };
 
 askForLocation();
+
+if (savedWeatherData) {
+  weatherDataActive(savedWeatherData);
+}
